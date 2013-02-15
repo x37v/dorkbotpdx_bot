@@ -2,7 +2,6 @@ require 'open-uri'
 require 'cinch'
 [
 	'seen',
-#	'shady',
 	'hello',
 	'topic_history',
 	'memo',
