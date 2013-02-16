@@ -6,7 +6,7 @@ require 'cinch'
 	'topic_history',
 	'memo',
 ].each do |p|
-	require File.join(File.dirname(__FILE__), p)
+	require File.join(File.dirname(__FILE__), "plugins", p)
 end
 
 # Automatically shorten URL's found in messages
