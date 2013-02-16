@@ -6,8 +6,8 @@ Bot for the dorkbotpdx irc channel.
 Requirements:
 ---------------------
 - ruby (1.9)
-- cinch (last tested with 2.0.3) https://github.com/cinchrb/cinch
-- daemons
+- cinch https://github.com/cinchrb/cinch
+- daemons http://daemons.rubyforge.org/
 
 Use bundler, edit the Gemfile if you add new gem dependencies.
 
