@@ -15,10 +15,10 @@ To run the bot do:
 ---------------------
 
 foreground:
-`ruby runbot.rb run`
+- `ruby runbot.rb run`
 
 manage the daemon:
-`ruby runbot.rb start`
-`ruby runbot.rb stop`
-`ruby runbot.rb restart`
+- `ruby runbot.rb start`
+- `ruby runbot.rb stop`
+- `ruby runbot.rb restart`
 
