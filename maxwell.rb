@@ -1,3 +1,5 @@
+#this is where the bot is created and small customizations are made
+
 require File.join(File.dirname(__FILE__), 'bot')
 
 opts = {
