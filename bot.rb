@@ -18,7 +18,6 @@ def create_bot(opts)
 		 c.server = opts[:server]
 		 c.channels = opts[:channels]
 		 c.nick = opts[:name]
-		 #c.plugins.plugins = [Shady, Seen, Hello, TopicHistory, Memo]
 		 c.plugins.plugins = [Seen, Hello, TopicHistory, Memo]
 	  end
 

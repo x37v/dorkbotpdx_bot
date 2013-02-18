@@ -17,7 +17,7 @@ bot.on :message, /^!laen/ do |m|
 end
 
 bot.on :message, /^!repo/ do |m|
-	m.reply("add/modify me:  https://github.com/x37v/dorkbotpdx_bot")
+	m.reply("add to or modify me:  https://github.com/x37v/dorkbotpdx_bot")
 end
 
 bot.start

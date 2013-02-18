@@ -1,3 +1,5 @@
+#written by Alex Norman
+
 class TopicHistory
   include Cinch::Plugin
   listen_to :topic, method: :on_topic

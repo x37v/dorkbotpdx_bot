@@ -1,3 +1,6 @@
+#taken from:
+#https://github.com/cinchrb/cinch/blob/master/examples/plugins/seen.rb
+#76d3bfd0ca56e9b5ba52da2c946f54117050958e
 class Seen
   class SeenStruct < Struct.new(:who, :where, :what, :time)
     def to_s
@@ -19,7 +22,6 @@ class Seen
   end
 
   def execute(m, nick)
-	 puts "#{m}"
     if nick == @bot.nick
       m.reply "That's me!"
     elsif nick == m.user.nick

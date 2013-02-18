@@ -1,3 +1,6 @@
+#taken from
+#https://github.com/cinchrb/cinch/blob/master/examples/plugins/memo.rb
+#76d3bfd0ca56e9b5ba52da2c946f54117050958e
 class Memo
   class MemoStruct < Struct.new(:nick, :channel, :text, :time)
     def to_s
