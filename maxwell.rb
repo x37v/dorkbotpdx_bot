@@ -10,7 +10,7 @@ opts = {
 
 bot = create_bot(opts)
 
-bot.on :message, /^!paul/ do |m|
+bot.on :message, /^!(paul|teensy)/ do |m|
 	m.reply("Paul [teensy]'s website is https://www.pjrc.com/ and he can be reached at paul@pjrc.com")
 end
 
