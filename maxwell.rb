@@ -19,7 +19,11 @@ bot.on :message, /^!(laen|osh|pcb)/ do |m|
 end
 
 bot.on :message, /^!repo/ do |m|
-	m.reply("add to or modify me:  https://github.com/x37v/dorkbotpdx_bot")
+	m.reply("Add to or modify me:  https://github.com/x37v/dorkbotpdx_bot")
+end
+
+bot.on :message, /^!faq/ do |m|
+	m.reply("DorkbotPDX FAQ lives here: http://dorkbotpdx.org/wiki/frequently_asked_questions")
 end
 
 bot.start
