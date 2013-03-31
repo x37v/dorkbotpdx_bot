@@ -26,4 +26,8 @@ bot.on :message, /^!faq/ do |m|
 	m.reply("DorkbotPDX FAQ lives here: http://dorkbotpdx.org/wiki/frequently_asked_questions")
 end
 
+bot.on :message, /^!meet/ do |m|
+	m.reply("Meetings are every other Monday, 7pm, at Backspace:  http://dorkbotpdx.org/meetings")
+end
+
 bot.start
