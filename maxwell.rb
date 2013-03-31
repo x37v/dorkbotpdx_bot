@@ -14,7 +14,7 @@ bot.on :message, /^!(paul|teensy)/ do |m|
 	m.reply("Paul [teensy]'s website is https://www.pjrc.com/ and he can be reached at paul@pjrc.com")
 end
 
-bot.on :message, /^!laen/ do |m|
+bot.on :message, /^!(laen|osh|pcb)/ do |m|
 	m.reply("Laen's PCB order has its own channel, #oshpark and the website is http://oshpark.com/")
 end
 
