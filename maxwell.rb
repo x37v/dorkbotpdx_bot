@@ -33,7 +33,8 @@ bot.on :message, /^!faq/ do |m|
 end
 
 bot.on :message, /^!meet/ do |m|
-	m.reply("Meetings are every other Monday, 7pm, at Backspace:  http://dorkbotpdx.org/meetings")
+	response = Format("Meetings are every other Monday, 7pm, at Backspace:  %s" % [Format(:urls_color, "http://dorkbotpdx.org/meetings")])
+	m.reply(response)
 end
 
 bot.start
