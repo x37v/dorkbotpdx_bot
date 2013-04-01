@@ -10,8 +10,6 @@ opts = {
 
 bot = create_bot(opts)
 
-urls_color = :lime
-
 bot.on :message, /^!(paul|teensy|pjrc)/ do |m|
 	response = Format("Paul [teensy]'s website is %s and he can be reached at %s" % [urlize("https://www.pjrc.com"), Format(:yellow, "paul@pjrc.com")])
 	m.reply(response)
@@ -38,7 +36,7 @@ bot.on :message, /^!meet/ do |m|
 end
 
 def urlize(u)
-	return Format(:urls_color, u)
+	return Format(:lime, u)
 end
 
 bot.start
