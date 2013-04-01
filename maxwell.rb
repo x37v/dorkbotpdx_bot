@@ -4,18 +4,20 @@ require File.join(File.dirname(__FILE__), 'bot')
 
 opts = {
 	:server => 'irc.freenode.org',
-	:channels => ['#dorkbotpdx'],
-	:name => 'maxwell-dbpdx'
+	:channels => ['#bxtest'],
+	:name => 'bxtest'
 }
 
 bot = create_bot(opts)
 
-bot.on :message, /^!(paul|teensy)/ do |m|
-	m.reply("Paul [teensy]'s website is https://www.pjrc.com/ and he can be reached at paul@pjrc.com")
+bot.on :message, /^!(paul|teensy|pjrc)/ do |m|
+	response = Format("Paul [teensy]'s website is %s and he can be reached at %s" % [Format(:green, "https://www.pjrc.com"), Format(:yellow, "paul@pjrc.com")])
+	m.reply(response )
 end
 
 bot.on :message, /^!(laen|osh|pcb)/ do |m|
-	m.reply("Laen's PCB order has its own channel, #oshpark and the website is http://oshpark.com/")
+	response = "Laen's PCB order has its own channel, #oshpark and the website is http://oshpark.com/")
+	m.reply(response)
 end
 
 bot.on :message, /^!repo/ do |m|
