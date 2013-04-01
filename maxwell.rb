@@ -28,7 +28,8 @@ bot.on :message, /^!repo/ do |m|
 end
 
 bot.on :message, /^!faq/ do |m|
-	m.reply("DorkbotPDX FAQ lives here: http://dorkbotpdx.org/wiki/frequently_asked_questions")
+	response = Format("DorkbotPDX FAQ lives here: %s" % [Format(:urls_color, "http://dorkbotpdx.org/wiki/frequently_asked_questions")])
+	m.reply(response)
 end
 
 bot.on :message, /^!meet/ do |m|
