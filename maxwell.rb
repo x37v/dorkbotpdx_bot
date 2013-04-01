@@ -10,24 +10,33 @@ opts = {
 
 bot = create_bot(opts)
 
-bot.on :message, /^!(paul|teensy)/ do |m|
-	m.reply("Paul [teensy]'s website is https://www.pjrc.com/ and he can be reached at paul@pjrc.com")
+bot.on :message, /^!(paul|teensy|pjrc)/ do |m|
+	response = Format("Paul [teensy]'s website is %s and he can be reached at %s" % [urlize("https://www.pjrc.com"), Format(:yellow, "paul@pjrc.com")])
+	m.reply(response)
 end
 
 bot.on :message, /^!(laen|osh|pcb)/ do |m|
-	m.reply("Laen's PCB order has its own channel, #oshpark and the website is http://oshpark.com/")
+	response = Format("Laen's PCB order has its own channel, %s and the website is %s" % [Format(:yellow, "#oshpark"), urlize("http://oshpark.com")])
+	m.reply(response)
 end
 
 bot.on :message, /^!repo/ do |m|
-	m.reply("Add to or modify me:  https://github.com/x37v/dorkbotpdx_bot")
+	response = Format("Add to or modify me: %s" % [urlize("https://github.com/x37v/dorkbotpdx_bot")])
+	m.reply(response)
 end
 
 bot.on :message, /^!faq/ do |m|
-	m.reply("DorkbotPDX FAQ lives here: http://dorkbotpdx.org/wiki/frequently_asked_questions")
+	response = Format("DorkbotPDX FAQ lives here: %s" % [urlize("http://dorkbotpdx.org/wiki/frequently_asked_questions")])
+	m.reply(response)
 end
 
 bot.on :message, /^!meet/ do |m|
-	m.reply("Meetings are every other Monday, 7pm, at Backspace:  http://dorkbotpdx.org/meetings")
+	response = Format("Meetings are every other Monday, 7pm, at Backspace:  %s" % [urlize("http://dorkbotpdx.org/meetings")])
+	m.reply(response)
+end
+
+def urlize(u)
+	return Format(:lime, u)
 end
 
 bot.start
