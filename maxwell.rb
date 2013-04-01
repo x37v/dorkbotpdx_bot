@@ -23,7 +23,8 @@ bot.on :message, /^!(laen|osh|pcb)/ do |m|
 end
 
 bot.on :message, /^!repo/ do |m|
-	m.reply("Add to or modify me:  https://github.com/x37v/dorkbotpdx_bot")
+	response = Format("Add to or modify me: %s" % [Format(:urls_color, "https://github.com/x37v/dorkbotpdx_bot")])
+	m.reply(response)
 end
 
 bot.on :message, /^!faq/ do |m|
