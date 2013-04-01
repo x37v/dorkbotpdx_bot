@@ -4,8 +4,8 @@ require File.join(File.dirname(__FILE__), 'bot')
 
 opts = {
 	:server => 'irc.freenode.org',
-	:channels => ['#bxtest'],
-	:name => 'bxtest'
+	:channels => ['#dorkbotpdx'],
+	:name => 'maxwell-dbpdx'
 }
 
 bot = create_bot(opts)
