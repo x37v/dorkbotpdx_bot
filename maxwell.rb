@@ -10,13 +10,15 @@ opts = {
 
 bot = create_bot(opts)
 
+urls_color = :lime
+
 bot.on :message, /^!(paul|teensy|pjrc)/ do |m|
-	response = Format("Paul [teensy]'s website is %s and he can be reached at %s" % [Format(:green, "https://www.pjrc.com"), Format(:yellow, "paul@pjrc.com")])
-	m.reply(response )
+	response = Format("Paul [teensy]'s website is %s and he can be reached at %s" % [Format(urls_color, "https://www.pjrc.com"), Format(:yellow, "paul@pjrc.com")])
+	m.reply(response)
 end
 
 bot.on :message, /^!(laen|osh|pcb)/ do |m|
-	response = "Laen's PCB order has its own channel, #oshpark and the website is http://oshpark.com/")
+	response = Format("Laen's PCB order has its own channel, %s and the website is %s" % [Format(:yellow, "#oshpark"), Format(urls_color, "http://oshpark.com")])
 	m.reply(response)
 end
 
