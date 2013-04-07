@@ -24,7 +24,7 @@ class Cinch::Bot
 
   def on_with_help(event, cmd, help_text, &blk)
     add_help(cmd, help_text)
-    self.on(event, /!#{cmd}/, &blk)
+    self.on(event, /^!#{cmd}/, &blk)
   end
 
   def print_help(message)
