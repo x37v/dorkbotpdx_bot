@@ -36,7 +36,7 @@ class Cinch::Bot
         message.reply(Format(" %s : %s" % [Format(:pink, "%-6s" % ['!' + key]), value]))
       end
       message.reply(Format(:red, "------------------- private/message commands --------------------"))
-      message.reply(Format(" %s : That's all we've built so far!" % [Format(:pink, '/msg %s help')]))
+      message.reply(Format("#{Format(:pink, "/msg #{nick}")} help : That's all we've built so far!"))
     end
   end
 end
