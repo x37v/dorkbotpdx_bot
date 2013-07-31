@@ -85,7 +85,7 @@ def create_bot(opts)
       if (not m.channel?) # sent with a private message
         bot.print_help(m)
       elsif (m.message =~ /^!help/) # asked in the channel
-        response = Format("Maxwell at your service. I am here to assist you.  %s" % [Format(:pink, "/msg %s help" % [opts[:name]])])
+        response = Format("Maxwell at your service. I am here to assist you.  %s" % [Format(:pink, "/msg %s help" % [nick])])
         m.reply(response)
       end
     end
