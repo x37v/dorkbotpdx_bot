@@ -2,6 +2,8 @@
 
 require File.join(File.dirname(__FILE__), 'bot')
 
+require 'youtube_it'
+
 opts = {
   :server => 'irc.freenode.org',
   :channels => ['#dorkbotpdx'],
@@ -37,6 +39,14 @@ end
 
 bot.on_with_help :message, 'meet', 'Describes when we meet and links to the meeting page' do |m|
   response = Format("Meetings are every other Monday, 7pm, at Backspace: #{urlize("http://dorkbotpdx.org/meetings")}")
+  m.reply(response)
+end
+
+bot.on_with_help :message, 'lpc', 'I need a squid sandwich.' do |m|
+  client = YouTubeIt::Client.new() 
+  res =  client.videos_by(:query => "longmont potion castle", :page => rand(9)+1, :per_page => 25)
+  url = urlize(res.videos[rand(res.videos.length)].player_url)
+  response = Format("#{url}")
   m.reply(response)
 end
 
