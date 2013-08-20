@@ -2,7 +2,9 @@
 #specified plugins and automatic url shortening
 
 require 'rubygems'
-require 'bundler/setup'
+require 'bundler'
+Bundler.setup(:default)
+
 require 'open-uri'
 require 'cinch'
 [
