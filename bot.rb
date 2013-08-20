@@ -1,6 +1,8 @@
 #load up the plugin files, and on create_bot(options) create a bot with the
 #specified plugins and automatic url shortening
 
+require 'rubygems'
+require 'bundler/setup'
 require 'open-uri'
 require 'cinch'
 [
