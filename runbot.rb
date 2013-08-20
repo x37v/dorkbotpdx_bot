@@ -6,5 +6,7 @@
 
 require 'rubygems'
 require 'daemons'
+require 'bundler'
+Bundler.setup(:default)
 
 Daemons.run('maxwell.rb')
