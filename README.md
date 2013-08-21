@@ -1,7 +1,7 @@
-Dorkbotpdx bot AKA maxwell
+DorkbotPdx bot AKA maxwell
 ==============
 
-Bot for the dorkbotpdx irc channel.
+Bot for the #dorkbotpdx irc channel (on freenode)
 
 
 Requirements:
