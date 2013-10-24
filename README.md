@@ -3,6 +3,7 @@ DorkbotPdx bot AKA maxwell
 
 Bot for the #dorkbotpdx irc channel (on freenode)
 
+<a href="http://www.medonis.com/images/Maxwell_looking_sm.jpg"><img src="http://www.medonis.com/images/Maxwell_looking_sm.jpg" alt="maxwell" height="150px"/></a>
 
 Requirements:
 ---------------------
