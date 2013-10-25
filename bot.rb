@@ -12,10 +12,108 @@ require 'cinch'
   require File.join(File.dirname(__FILE__), "plugins", p)
 end
 
+class PreMeet
+	def initialize(bot)
+	  @where = 'SlowBar'
+	  @who = []
+	  @whonot = []
+	  @bot = bot
+	end
+
+	def handle(m)
+	  clear() unless today_is_dorkbot()
+      if m.message =~ /^!slow$/
+	    ask_status(m)
+      elsif m.message =~ /^!slow\?$/
+	    about_slow(m)
+	  elsif m.message =~ /^slow\+\+/
+	    add_nick(m)
+	  elsif m.message =~ /^slow--$/
+	    remove_nick(m)
+	  else
+	    return false
+	  end
+	  return true
+	end
+
+	def add_nick(m)
+	  if today_is_dorkbot()
+        @whonot.delete(m.user.nick)
+	    if @who.include?(m.user.nick)
+  		  m.reply(@bot.Format(:yellow, '%s: Settle down, we know you\'ll be there.' % [m.user.nick]))
+	    else
+		  @who = (@who << m.user.nick).uniq
+		  m.reply(@bot.Format(:lime, '%s will be going to the premeet at %s' % [m.user.nick, @where]))
+	    end
+		ask_status(m)
+	  else
+	    m.reply(m.user.nick + ': That will make more sense on a Dorkbot day.')
+	  end
+	end
+
+	def remove_nick(m)
+	  if today_is_dorkbot()
+        @who.delete(m.user.nick)
+		@whonot = (@whonot << m.user.nick).uniq
+	    m.reply(m.user.nick + ': You will be missed!')
+		ask_status(m)
+      else
+	    m.reply(m.user.nick + ': That will make more sense on a Dorkbot day.')
+	  end
+	end
+
+	def ask_status(m)
+	  if today_is_dorkbot()
+	    if(@who.size == 0)
+	      m.reply(@bot.Format(:red, 'Nobody has committed to %s yet today.' % [@where]))
+	    else
+	      m.reply(@bot.Format(:yellow, '%s premeet attendees: %s' % [@where, @bot.Format(:lime, @who.join(", "))]))
+	    end
+		if(@whonot.size > 0)
+		  m.reply(@bot.Format(:yellow, '%s premeet absentees: %s' % [@where, @bot.Format(:red, @whonot.join(", "))]))
+		end
+	  else
+	    clear()
+		about_slow(m)
+	  end
+	end
+
+	def about_slow(m)
+	  response =  @bot.Format(:lime, "Pre-meet is at %s, about 6pm on Dorkbot Monday nights. Join us!" % [@where])
+	  m.reply(response)
+	end
+
+	def today_is_dorkbot()
+	  # Would be rad if this were actually tied into the google calendar!
+      # For now it's just a biweek calculation on a known dorkbot date
+	  known_dorkbot = Date.parse('2013-10-21')
+	  date = Date::today
+	  while((date <=> known_dorkbot) >= 0)
+	    if(date === known_dorkbot)
+		  return true
+		end
+	    date = date - 14
+      end
+	  return false
+	end
+
+	def clear()
+	  @who = []
+	  @whonot = []
+	end
+
+end
+
 # Automatically shorten URL's found in messages
 # Using the tinyURL API
 
 class Cinch::Bot
+
+  def handle_as_premeet(m)
+    @premeet ||= PreMeet.new(self)
+    return @premeet.handle(m)
+  end
+
   #very basic help system
   def add_help(cmd, help_text)
     @help_data ||= Hash.new
@@ -35,11 +133,13 @@ class Cinch::Bot
       @help_data.each do |key, value|
         message.reply(Format(" %s : %s" % [Format(:pink, "%-6s" % ['!' + key]), value]))
       end
+      message.reply(Format(" %s : Pre-meeting roundup roll call" % [Format(:pink, "%-6s" % ['!slow'])]))
       message.reply(Format(:red, "------------------- private/message commands --------------------"))
       message.reply(Format("#{Format(:pink, "/msg #{nick}")} help : That's all we've built so far!"))
     end
   end
 end
+
 
 def create_bot(opts)
   Cinch::Bot.new do
@@ -68,8 +168,9 @@ def create_bot(opts)
     end
 
     on :channel do |m|
-      return if m =~ /\A!/
-        urls = URI.extract(m.message, "http").reject { |url| url.length < 70 }
+      return if bot.handle_as_premeet(m)
+      return if m =~ /\A!/	# The help system will handle it
+      urls = URI.extract(m.message, "http").reject { |url| url.length < 70 }
 
       if urls.any?
         short_urls = urls.map {|url| shorten(url) }.compact
@@ -91,5 +192,4 @@ def create_bot(opts)
     end
   end
 end
-
 
