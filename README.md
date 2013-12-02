@@ -31,3 +31,4 @@ Contribute:
 
 There are a lot of good examples in https://github.com/cinchrb/cinch/tree/master/examples/plugins to start from.
 
+We're just using git to deploy.  Get set up with ssh keys and push master to dorkbotpdx.org:~maxwell/bot/ and the bot should reboot with the new code.
