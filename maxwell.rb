@@ -38,7 +38,7 @@ bot.on_with_help :message, 'faq', 'Provides a link to the FAQ (frequently asked 
 end
 
 bot.on_with_help :message, 'meet', 'Describes when we meet and links to the meeting page' do |m|
-  response = Format("Meetings are every other Monday, 7pm, at Backspace: #{urlize("http://dorkbotpdx.org/meetings")}")
+  response = Format("Meetings are every other Monday, 7pm, at Bunk Bar: #{urlize("http://dorkbotpdx.org/meetings")}")
   m.reply(response)
 end
 
