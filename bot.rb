@@ -14,177 +14,156 @@ require 'cinch'
 end
 
 class PreMeet
-	def initialize(bot)
-	  @where = 'SlowBar'
-	  @who = []
-	  @whonot = []
-	  @bot = bot
-	end
+  def initialize(bot)
+    @where = 'SlowBar'
+    @who = []
+    @whonot = []
+    @bot = bot
+  end
 
-	def handle(m)
-	  clear() unless today_is_dorkbot()
+  def handle(m)
+    clear() unless today_is_dorkbot()
       if m.message =~ /^!slow$/
-	    ask_status(m)
+      ask_status(m)
       elsif m.message =~ /^!slow\?$/
-	    about_slow(m)
-	  elsif m.message =~ /^slow\+\+/
-	    add_nick(m)
-	  elsif m.message =~ /^slow--$/
-	    remove_nick(m)
-	  else
-	    return false
-	  end
-	  return true
-	end
+      about_slow(m)
+    elsif m.message =~ /^slow\+\+/
+      add_nick(m)
+    elsif m.message =~ /^slow--$/
+      remove_nick(m)
+    else
+      return false
+    end
+    return true
+  end
 
-	def add_nick(m)
-	  if today_is_dorkbot()
+  def add_nick(m)
+    if today_is_dorkbot()
         @whonot.delete(m.user.nick)
-	    if @who.include?(m.user.nick)
-  		  m.reply(@bot.Format(:yellow, '%s: Settle down, we know you\'ll be there.' % [m.user.nick]))
-	    else
-		  @who = (@who << m.user.nick).uniq
-		  m.reply(@bot.Format(:lime, '%s will be going to the premeet at %s' % [m.user.nick, @where]))
-	    end
-		ask_status(m)
-	  else
-	    m.reply(m.user.nick + ': That will make more sense on a Dorkbot day.')
-	  end
-	end
-
-	def remove_nick(m)
-	  if today_is_dorkbot()
-        @who.delete(m.user.nick)
-		@whonot = (@whonot << m.user.nick).uniq
-	    m.reply(m.user.nick + ': You will be missed!')
-		ask_status(m)
+      if @who.include?(m.user.nick)
+        m.reply(@bot.Format(:yellow, '%s: Settle down, we know you\'ll be there.' % [m.user.nick]))
       else
-	    m.reply(m.user.nick + ': That will make more sense on a Dorkbot day.')
-	  end
-	end
-
-	def ask_status(m)
-	  if today_is_dorkbot()
-	    if(@who.size == 0)
-	      m.reply(@bot.Format(:red, 'Nobody has committed to %s yet today.' % [@where]))
-	    else
-	      m.reply(@bot.Format(:yellow, '%s premeet attendees: %s' % [@where, @bot.Format(:lime, @who.join(", "))]))
-	    end
-		if(@whonot.size > 0)
-		  m.reply(@bot.Format(:yellow, '%s premeet absentees: %s' % [@where, @bot.Format(:red, @whonot.join(", "))]))
-		end
-	  else
-	    clear()
-		about_slow(m)
-	  end
-	end
-
-	def about_slow(m)
-	  response =  @bot.Format(:lime, "Pre-meet is at %s, about 6pm on Dorkbot Monday nights. Join us!" % [@where])
-	  m.reply(response)
-	end
-
-	def today_is_dorkbot()
-	  # Would be rad if this were actually tied into the google calendar!
-      # For now it's just a biweek calculation on a known dorkbot date
-	  known_dorkbot = Date.parse('2013-10-21')
-	  date = Date::today
-	  while((date <=> known_dorkbot) >= 0)
-	    if(date === known_dorkbot)
-		  return true
-		end
-	    date = date - 14
+      @who = (@who << m.user.nick).uniq
+      m.reply(@bot.Format(:lime, '%s will be going to the premeet at %s' % [m.user.nick, @where]))
       end
-	  return false
-	end
+    ask_status(m)
+    else
+      m.reply(m.user.nick + ': That will make more sense on a Dorkbot day.')
+    end
+  end
 
-	def clear()
-	  @who = []
-	  @whonot = []
-	end
+  def remove_nick(m)
+    if today_is_dorkbot()
+        @who.delete(m.user.nick)
+    @whonot = (@whonot << m.user.nick).uniq
+      m.reply(m.user.nick + ': You will be missed!')
+    ask_status(m)
+      else
+      m.reply(m.user.nick + ': That will make more sense on a Dorkbot day.')
+    end
+  end
+
+  def ask_status(m)
+    if today_is_dorkbot()
+      if(@who.size == 0)
+        m.reply(@bot.Format(:red, 'Nobody has committed to %s yet today.' % [@where]))
+      else
+        m.reply(@bot.Format(:yellow, '%s premeet attendees: %s' % [@where, @bot.Format(:lime, @who.join(", "))]))
+      end
+    if(@whonot.size > 0)
+      m.reply(@bot.Format(:yellow, '%s premeet absentees: %s' % [@where, @bot.Format(:red, @whonot.join(", "))]))
+    end
+    else
+      clear()
+    about_slow(m)
+    end
+  end
+
+  def about_slow(m)
+    response =  @bot.Format(:lime, "Pre-meet is at %s, about 6pm on Dorkbot Monday nights. Join us!" % [@where])
+    m.reply(response)
+  end
+
+  def today_is_dorkbot()
+    # Would be rad if this were actually tied into the google calendar!
+      # For now it's just a biweek calculation on a known dorkbot date
+    known_dorkbot = Date.parse('2013-10-21')
+    date = Date::today
+    while((date <=> known_dorkbot) >= 0)
+      if(date === known_dorkbot)
+      return true
+    end
+      date = date - 14
+      end
+    return false
+  end
+
+  def clear()
+    @who = []
+    @whonot = []
+  end
 
 end
 
 class ResistorCalc
-	def initialize(bot)
-	  @bot = bot
-	end
+  def initialize(bot)
+    @bot = bot
+  end
 
-	def handle(m)
+  def handle(m)
       if m.message =~ /^!res/
-		parts = m.message.split(/\s+/)
-		if parts[1].downcase =~ /\d(\.\d)?+k/ or parts[1] =~ /\d(\.\d)?m/
-		  m.reply(m.user.nick + ": I don't grok that yet. Help me! https://github.com/x37v/dorkbotpdx_bot")
-		  return true
-		end
-		val = ((10 * map_color(parts[1])) + map_color(parts[2])) * (10**map_color(parts[3]))
-	    m.reply(m.user.nick + ': --[' + 
-		  color_block(parts[1]) + ' ' + 
-		  color_block(parts[2]) + ' ' + 
-		  color_block(parts[3]) + 
-		  ']-- ' + human_readable(val));
-		return true
-	  end
-	end
+    parts = m.message.split(/\s+/)
+    if parts[1].downcase =~ /\d(\.\d)?+k/ or parts[1] =~ /\d(\.\d)?m/
+      m.reply(m.user.nick + ": I don't grok that yet. Help me! https://github.com/x37v/dorkbotpdx_bot")
+      return true
+    end
+    val = ((10 * map_color(parts[1])) + map_color(parts[2])) * (10**map_color(parts[3]))
+      m.reply(m.user.nick + ': --[' + 
+      color_block(parts[1]) + ' ' + 
+      color_block(parts[2]) + ' ' + 
+      color_block(parts[3]) + 
+      ']-- ' + human_readable(val));
+    return true
+    end
+  end
 
-	def map_color(color)
-	  colors = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'gray', 'white']
+  def map_color(color)
+    colors = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'gray', 'white']
       # gold and silver...meh!
-	  return colors.index(normalize_color(color))
-	end
+    return colors.index(normalize_color(color))
+  end
 
-	def normalize_color(color)
-	  color = color.downcase
-	  color = color.gsub(/purple/, 'violet')
-	  color = color.gsub(/grey/, 'gray')
-	  return color
-	end
+  def normalize_color(color)
+    color = color.downcase
+    color = color.gsub(/purple/, 'violet')
+    color = color.gsub(/grey/, 'gray')
+    return color
+  end
 
-	def human_readable(value)
-	  return @bot.Format(:white, human_readable_text(value))
-	end
+  def human_readable(value)
+    return @bot.Format(:white, human_readable_text(value))
+  end
 
-	def human_readable_text(value)
-	  ohm = 'Ω'
-	  if value < 1000
-	    return value.to_s + ' ' + ohm
-	  elsif value < 10000
-	    return (value/1000.0).to_s + 'k ' + ohm
-	  elsif value < 100000
-	    return (value*10/10000.0).to_s + 'k ' + ohm
-	  elsif value < 1000000
-	    return (value*100/100000.0).to_s + 'k ' + ohm
-	  else
-	    return (value/1000000.0).to_s + 'M ' + ohm
-	  end
-	end
+  def human_readable_text(value)
+    ohm = 'Ω'
+    if value < 1000
+      return value.to_s + ' ' + ohm
+    elsif value < 10000
+      return (value/1000.0).to_s + 'k ' + ohm
+    elsif value < 100000
+      return (value*10/10000.0).to_s + 'k ' + ohm
+    elsif value < 1000000
+      return (value*100/100000.0).to_s + 'k ' + ohm
+    else
+      return (value/1000000.0).to_s + 'M ' + ohm
+    end
+  end
 
-	def color_block(color)
-	  block = '█'
-	  case normalize_color(color)
-	  when 'black'
-	    colorsym = :black
-	  when 'brown'
-	    colorsym = :brown
-	  when 'red'
-	    colorsym = :red
-	  when 'orange'
-	    colorsym = :orange
-	  when 'yellow'
-	    colorsym = :yellow
-	  when 'green'
-	    colorsym = :green
-	  when 'blue'
-	    colorsym = :blue
-	  when 'violet'
-	    colorsym = :purple
-	  when 'gray'
-	    colorsym = :grey
-	  when 'white'
-	    colorsym = :white
-	  end
-	  return @bot.Format(colorsym, '%s' % [block])
-	end
+  def color_block(color)
+    block = '█'
+    colorsym = normalize_color(color).to_sym
+    return @bot.Format(colorsym, block)
+  end
 end
 
 # Automatically shorten URL's found in messages
@@ -198,8 +177,8 @@ class Cinch::Bot
   end
 
   def handle_as_resistor(m)
-  	@rescalc ||= ResistorCalc.new(self)
-	return @rescalc.handle(m)
+    @rescalc ||= ResistorCalc.new(self)
+  return @rescalc.handle(m)
   end
 
   #very basic help system
@@ -259,7 +238,7 @@ def create_bot(opts)
     on :channel do |m|
       return if bot.handle_as_premeet(m)
       return if bot.handle_as_resistor(m)
-      return if m =~ /\A!/	# The help system will handle it
+      return if m =~ /\A!/  # The help system will handle it
       urls = URI.extract(m.message, "http").reject { |url| url.length < 70 }
 
       if urls.any?
