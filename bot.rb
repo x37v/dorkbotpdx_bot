@@ -104,6 +104,88 @@ class PreMeet
 
 end
 
+class ResistorCalc
+	def initialize(bot)
+	  @bot = bot
+	end
+
+	def handle(m)
+      if m.message =~ /^!res/
+		parts = m.message.split(/\s+/)
+		if parts[1].downcase =~ /\d(\.\d)?+k/ or parts[1] =~ /\d(\.\d)?m/
+		  m.reply(m.user.nick + ": I don't grok that yet. Help me! https://github.com/x37v/dorkbotpdx_bot")
+		  return true
+		end
+		val = ((10 * map_color(parts[1])) + map_color(parts[2])) * (10**map_color(parts[3]))
+	    m.reply(m.user.nick + ': --[' + 
+		  color_block(parts[1]) + ' ' + 
+		  color_block(parts[2]) + ' ' + 
+		  color_block(parts[3]) + 
+		  ']-- ' + human_readable(val));
+		return true
+	  end
+	end
+
+	def map_color(color)
+	  colors = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'gray', 'white']
+      # gold and silver...meh!
+	  return colors.index(normalize_color(color))
+	end
+
+	def normalize_color(color)
+	  color = color.downcase
+	  color = color.gsub(/purple/, 'violet')
+	  color = color.gsub(/grey/, 'gray')
+	  return color
+	end
+
+	def human_readable(value)
+	  return @bot.Format(:white, human_readable_text(value))
+	end
+
+	def human_readable_text(value)
+	  ohm = 'Ω'
+	  if value < 1000
+	    return value.to_s + ' ' + ohm
+	  elsif value < 10000
+	    return (value/1000.0).to_s + 'k ' + ohm
+	  elsif value < 100000
+	    return (value*10/10000.0).to_s + 'k ' + ohm
+	  elsif value < 1000000
+	    return (value*100/100000.0).to_s + 'k ' + ohm
+	  else
+	    return (value/1000000.0).to_s + 'M ' + ohm
+	  end
+	end
+
+	def color_block(color)
+	  block = '█'
+	  case normalize_color(color)
+	  when 'black'
+	    colorsym = :black
+	  when 'brown'
+	    colorsym = :brown
+	  when 'red'
+	    colorsym = :red
+	  when 'orange'
+	    colorsym = :orange
+	  when 'yellow'
+	    colorsym = :yellow
+	  when 'green'
+	    colorsym = :green
+	  when 'blue'
+	    colorsym = :blue
+	  when 'violet'
+	    colorsym = :purple
+	  when 'gray'
+	    colorsym = :grey
+	  when 'white'
+	    colorsym = :white
+	  end
+	  return @bot.Format(colorsym, '%s' % [block])
+	end
+end
+
 # Automatically shorten URL's found in messages
 # Using the tinyURL API
 
@@ -112,6 +194,11 @@ class Cinch::Bot
   def handle_as_premeet(m)
     @premeet ||= PreMeet.new(self)
     return @premeet.handle(m)
+  end
+
+  def handle_as_resistor(m)
+  	@rescalc ||= ResistorCalc.new(self)
+	return @rescalc.handle(m)
   end
 
   #very basic help system
@@ -134,6 +221,7 @@ class Cinch::Bot
         message.reply(Format(" %s : %s" % [Format(:pink, "%-6s" % ['!' + key]), value]))
       end
       message.reply(Format(" %s : Pre-meeting roundup roll call" % [Format(:pink, "%-6s" % ['!slow'])]))
+      message.reply(Format(" %s : Calculate a resistor value from a color triplet" % [Format(:pink, "%-6s" % ['!res[istor]'])]))
       message.reply(Format(:red, "------------------- private/message commands --------------------"))
       message.reply(Format("#{Format(:pink, "/msg #{nick}")} help : That's all we've built so far!"))
     end
@@ -169,6 +257,7 @@ def create_bot(opts)
 
     on :channel do |m|
       return if bot.handle_as_premeet(m)
+      return if bot.handle_as_resistor(m)
       return if m =~ /\A!/	# The help system will handle it
       urls = URI.extract(m.message, "http").reject { |url| url.length < 70 }
 
