@@ -1,3 +1,4 @@
+# encoding: UTF-8 
 #load up the plugin files, and on create_bot(options) create a bot with the
 #specified plugins and automatic url shortening
 
