@@ -13,6 +13,13 @@ Requirements:
 
 Use bundler, edit the Gemfile if you add new gem dependencies.
 
+```
+$ sudo gem install bundler
+$ bundler
+```
+
+Build errors here will likely require installing additional os packages.
+
 
 To run the bot do:
 ---------------------
