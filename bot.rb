@@ -113,28 +113,36 @@ class ResistorCalc
   def handle(m)
       if m.message =~ /^!res/
     parts = m.message.split(/\s+/)
-    if parts[1].downcase =~ /\d(\.\d)?+k/ or parts[1] =~ /\d(\.\d)?m/
+    if parts[1].downcase =~ /\d(\.\d)?+k/ or parts[1] =~ /\d(\.\d)?m/ or parts.length() != 4
       m.reply(m.user.nick + ": I don't grok that yet. Help me! https://github.com/x37v/dorkbotpdx_bot")
       return true
     end
-    val = ((10 * map_color(parts[1])) + map_color(parts[2])) * (10**map_color(parts[3]))
+    begin
+      values = parts[1..-1].collect { |v| map_color(v) }
+      val = values[0] * 10 + values[1] + 10 ** values[3]
       m.reply(m.user.nick + ': --[' + 
-      color_block(parts[1]) + ' ' + 
-      color_block(parts[2]) + ' ' + 
-      color_block(parts[3]) + 
-      ']-- ' + human_readable(val));
-    return true
+              color_block(parts[1]) + ' ' + 
+              color_block(parts[2]) + ' ' + 
+              color_block(parts[3]) + 
+              '  ]-- ' + human_readable(val));
+      return true
+    rescue => e
+      m.reply(m.user.nick + ": error #{e}")
+      return true
+    end
     end
   end
 
   def map_color(color)
     colors = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'gray', 'white']
       # gold and silver...meh!
-    return colors.index(normalize_color(color))
+    i = colors.index(normalize_color(color))
+    raise "#{color} not found" unless i
+    return i
   end
 
   def normalize_color(color)
-    color = color.downcase
+    color = color.downcase.gsub(/\s/, '')
     color = color.gsub(/purple/, 'violet')
     color = color.gsub(/grey/, 'gray')
     return color
