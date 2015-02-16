@@ -122,7 +122,7 @@ class ResistorCalc
       color_block(parts[1]) + ' ' + 
       color_block(parts[2]) + ' ' + 
       color_block(parts[3]) + 
-      ']-- ' + human_readable(val));
+      '  ]-- ' + human_readable(val));
     return true
     end
   end
