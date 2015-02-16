@@ -236,9 +236,9 @@ def create_bot(opts)
     end
 
     on :channel do |m|
-      return if bot.handle_as_premeet(m)
-      return if bot.handle_as_resistor(m)
-      return if m =~ /\A!/  # The help system will handle it
+      next if bot.handle_as_premeet(m)
+      next if bot.handle_as_resistor(m)
+      next if m =~ /\A!/  # The help system will handle it
       urls = URI.extract(m.message, "http").reject { |url| url.length < 70 }
 
       if urls.any?
